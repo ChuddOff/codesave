@@ -3,7 +3,7 @@ import React from 'react';
 const Profile = () => {
     return (
         <main className="">
-            <h2>Ваши личные данные</h2>
+            <h2 className={`font-bold text-[39px] text-center text-violet`}>Ваши личные данные</h2>
             <section className="flex flex-col items-center">
                 <div>
                     <div>
