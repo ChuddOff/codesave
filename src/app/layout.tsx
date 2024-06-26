@@ -21,9 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <NextUIProvider>
-        <body className={montserrat.className}>{children}</body>
-      </NextUIProvider>
+    <body className={montserrat.className}>
+        <NextUIProvider>
+            {children}
+        </NextUIProvider>
+      </body>
+
     </html>
   );
 }
