@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NextUIProvider from "./provider/mainprovider";
+import NextUIProvider from "./provider/mainProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextUIProvider>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className + "font-body"}>{children}</body>
       </NextUIProvider>
     </html>
   );
