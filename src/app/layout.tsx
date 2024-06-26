@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextUIProvider>
-        <body className={inter.className + "font-body"}>{children}</body>
+        <body className={inter.className + `font-sans`}>{children}</body>
       </NextUIProvider>
     </html>
   );
