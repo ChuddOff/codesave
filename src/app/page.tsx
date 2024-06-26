@@ -21,6 +21,7 @@ export default function Home() {
               input: "text-small",
               inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
+            color={"7E7CFF"}
             placeholder="Search"
             size="sm"
             startContent={<Image src='search.svg' alt="search" width={26.49} height={27.11} />}
