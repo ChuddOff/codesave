@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import {nextui} from "@nextui-org/react";
-import defaultTheme from 'tailwindcss/defaultTheme'
 
 
 const config: Config = {
@@ -12,9 +11,6 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
-      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

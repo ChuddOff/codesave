@@ -1,6 +1,7 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import logo from '/logo.svg';
 import Image from "next/image";
+import Profile from "@/components/app-profile/Profile";
 
 
 export default function Home() {
@@ -21,7 +22,6 @@ export default function Home() {
               input: "text-small",
               inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            color={"7E7CFF"}
             placeholder="Search"
             size="sm"
             startContent={<Image src='search.svg' alt="search" width={26.49} height={27.11} />}
@@ -36,9 +36,7 @@ export default function Home() {
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      <main className="">
-      
-      </main>
+        <Profile/>
     </>
     
   );
