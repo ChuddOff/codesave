@@ -1,13 +1,13 @@
 import React from 'react';
-import {Input, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
+import {Input, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import Image from "next/image";
 
 const Header = () => {
     return (
         <Navbar maxWidth='full' isBordered={true}>
-            <NavbarBrand >
-                <Image src="/logo.svg" alt="logo" width={44.23} height={41.49} />
-                <h1 className="font-black text-4xl text-center"><span className="text-violet">Code</span><span className="text-orange">Save</span></h1>
+            <NavbarBrand>
+                <Link href='/'><Image src="/logo.svg" alt="logo" width={44.23} height={41.49} />
+                <h1 className="font-black text-4xl text-center"><span className="text-violet">Code</span><span className="text-orange">Save</span></h1></Link>
             </NavbarBrand>
 
 
@@ -27,10 +27,10 @@ const Header = () => {
                 />
 
                 <NavbarItem>
-                    <button className={'text-violet'}>Code</button>
+                    <Link className={'text-violet'} href='/code'>Code</Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <button className={'text-violet'}>Upload</button>
+                    <Link className={'text-violet'} href='/upload'>Upload</Link>
                 </NavbarItem>
             </NavbarContent>
         </Navbar>
