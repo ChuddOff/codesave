@@ -24,7 +24,6 @@ const Header = () => {
                     size="sm"
                     startContent={<Image src='search.svg' alt="search" width={26.49} height={27.11} />}
                     type="search"
-                    max
                 />
 
                 <NavbarItem>

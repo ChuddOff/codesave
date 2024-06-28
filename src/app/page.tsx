@@ -1,7 +1,7 @@
-import About from "@/components/about/About";
+import Profile from "@/components/app-profile/Profile";
 
 export default function Home() {
   return (
-    <About/>
+    <Profile/>
   );
 }

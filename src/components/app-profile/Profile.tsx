@@ -2,7 +2,6 @@ import React from 'react';
 import {Input} from "@nextui-org/react";
 import Image from "next/image";
 
-
 const Profile: React.FC = () => {
     return (
         <main>
