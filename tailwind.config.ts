@@ -2,7 +2,17 @@ import type { Config } from "tailwindcss";
 import {nextui} from "@nextui-org/react";
 
 
-const config: Config = {
+const config: {
+  plugins: ReturnType<Plugin>[];
+  theme: {
+    extend: {
+      backgroundImage: { "gradient-conic": string; "gradient-radial": string };
+      colors: { orange: string; violet: string }
+    }
+  };
+  darkMode: string;
+  content: string[]
+} = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
