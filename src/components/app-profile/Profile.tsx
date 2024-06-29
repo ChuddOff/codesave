@@ -92,6 +92,7 @@ const Profile: React.FC = () => {
                   defaultBackground="transparent"
                   selectedBackground="gray"
                   svgColor="white"
+                  borderColor="gray"
                 />
                 <label htmlFor="js">JS</label>
               </div>
