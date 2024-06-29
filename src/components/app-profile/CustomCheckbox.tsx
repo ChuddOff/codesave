@@ -7,12 +7,14 @@ interface CustomCheckboxProps {
   defaultBackground: string; // дефолт цвет
   selectedBackground: string; // цвет фона когда кликнут
   svgColor: string; // цвет галочки
+  borderColor: string; // цвет бордера
 }
 
 export default function CustomCheckbox({
   defaultBackground,
   selectedBackground,
   svgColor,
+  borderColor
 }: CustomCheckboxProps) {
   const [isPressed, setIsPressed] = useState(false);
 
@@ -25,7 +27,7 @@ export default function CustomCheckbox({
               ? { backgroundColor: selectedBackground }
               : { backgroundColor: defaultBackground }
           }
-          className=" w-5 h-5 rounded border-1 border-[gray] transition-colors duration-300"
+          className={` w-5 h-5 rounded border-1 border-[${borderColor}] transition-colors duration-300`}
           onClick={() => setIsPressed(!isPressed)}
         >
           <div className="flex items-center justify-center h-full">
