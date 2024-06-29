@@ -8,36 +8,37 @@ interface CustomCheckboxProps {
   selectedBackground: string; // цвет фона когда кликнут
   svgColor: string; // цвет галочки
   borderColor: string; // цвет бордера
+  text: string;
 }
 
 export default function CustomCheckbox({
   defaultBackground,
   selectedBackground,
   svgColor,
-  borderColor
+  borderColor,
+  text,
 }: CustomCheckboxProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <div className="inline-block">
-      <label className="inline-flex relative items-center cursor-pointer">
+    <div className="flex items-center">
+      <label className="inline-flex relative items-center cursor-pointer" onClick={() => setIsPressed(!isPressed)}>
         <motion.div
           animate={
             isPressed
               ? { backgroundColor: selectedBackground }
               : { backgroundColor: defaultBackground }
           }
-          className={` w-5 h-5 rounded border-1 border-[${borderColor}] transition-colors duration-300`}
-          onClick={() => setIsPressed(!isPressed)}
+          className={` w-[24px] h-[24px] rounded border-1 border-[${borderColor}] transition-colors duration-300 flex items-center gap-[5px]`}
         >
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center">
             <motion.svg
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              width={16}
-              height={12}
+              width={24}
+              height={18}
               viewBox="0 0 17 18"
             >
               <motion.polyline
@@ -51,6 +52,7 @@ export default function CustomCheckbox({
               />
             </motion.svg>
           </div>
+          <p className={ isPressed ? `text-orange font-semibold select-none text-[20px] transition-[300ms]` : `text-violet font-semibold select-none text-[20px] transition-[300ms]`}>{text}</p>
         </motion.div>
       </label>
     </div>

@@ -11,7 +11,7 @@ const Profile: React.FC = () => {
       >
         Ваши личные данные
       </h2>
-      <section className="flex items-center justify-center pt-[50px] gap-[35px]">
+      <section className="flex items-center justify-center pt-[50px] gap-[35px] mb-[50px]">
         <div className="flex flex-col items-center gap-[35px]">
           <div className="flex flex-col items-center border-5 border-violet border-solid rounded-[15px] pt-[15px] justify-between gap-[15px]   w-[600px] h-[350px]">
             <h3 className={`font-bold text-[30px] text-orange`}>Ваши данные</h3>
@@ -64,41 +64,64 @@ const Profile: React.FC = () => {
           </div>
           <div className="flex flex-col items-center border-5 border-violet border-solid rounded-[15px] pt-[15px]    w-[600px] h-[350px]">
             <h3 className={`font-bold text-[30px] text-orange`}>Фильтры</h3>
-            <div className="flex flex-col pl-[35px] pb-[35px] gap-y-[15px]">
+            <div className="flex flex-col gap-y-[15px] w-[100%] pl-[30px] pt-[30px]">
               <Input
-                classNames={{
-                  base: "max-w-full sm:max-w-[10rem] h-10",
-                  mainWrapper: "h-full",
-                  input: "text-small",
-                  inputWrapper:
-                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                }}
-                placeholder="Search"
-                size="sm"
-                startContent={
-                  <Image
-                    src="search.svg"
-                    alt="search"
-                    width={26.49}
-                    height={27.11}
-                  />
-                }
-                type="search"
+                  classNames={{
+                    base: "max-w-full sm:max-w-[10rem] h-10",
+                    mainWrapper: "h-full",
+                    input: "text-small",
+                    inputWrapper:
+                        "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                  }}
+                  placeholder="Search"
+                  size="sm"
+                  startContent={
+                    <Image
+                        src="search.svg"
+                        alt="search"
+                        width={26.49}
+                        height={27.11}
+                    />
+                  }
+                  type="search"
               />
-              <div>Публичный</div>
-              <div>Приватный</div>
+              <div className={`flex flex-col gap-[10px] w-[100%]`}>
               <div>
-                <Checkbox
-                  defaultBackground="transparent"
-                  selectedBackground="gray"
-                  svgColor="white"
-                  borderColor="gray"
-                />
-                <label htmlFor="js">JS</label>
-              </div>
-              <div>
-                <input type={`checkbox`} id={`css`} />
-                <label htmlFor="css">CSS</label>
+                  <Checkbox
+                      defaultBackground="transparent"
+                      selectedBackground="#FF6359"
+                      svgColor="white"
+                      borderColor="gray"
+                      text="Публичный"
+                  />
+                </div>
+                <div>
+                  <Checkbox
+                      defaultBackground="transparent"
+                      selectedBackground="#FF6359"
+                      svgColor="white"
+                      borderColor="gray"
+                      text="Приватный"
+                  />
+                </div>
+                <div>
+                  <Checkbox
+                      defaultBackground="transparent"
+                      selectedBackground="#FF6359"
+                      svgColor="white"
+                      borderColor="gray"
+                      text="JS"
+                  />
+                </div>
+                <div>
+                  <Checkbox
+                      defaultBackground="transparent"
+                      selectedBackground="#FF6359"
+                      svgColor="white"
+                      borderColor="gray"
+                      text="CSS"
+                  />
+                </div>
               </div>
             </div>
           </div>
