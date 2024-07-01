@@ -4,6 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {Editor, OnMount} from "@monaco-editor/react";
 
 export default function Home() {
+    
     const resizerRef1 = useRef<HTMLDivElement>(null);
     const resizerRef2 = useRef<HTMLDivElement>(null);
 
