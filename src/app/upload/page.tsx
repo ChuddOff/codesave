@@ -3,10 +3,19 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Editor, OnMount} from "@monaco-editor/react";
 
+import './style.css'
+
+interface ExtendedDiv extends HTMLDivElement {
+    _clientY: number;
+    _clientX: number;
+    _isResizing: boolean;
+}
+
 export default function Home() {
-    
-    const resizerRef1 = useRef<HTMLDivElement>(null);
-    const resizerRef2 = useRef<HTMLDivElement>(null);
+
+    const resizerRef1 = useRef<ExtendedDiv>(null);
+    const resizerRef2 = useRef<ExtendedDiv>(null);
+    const resizerRef3 = useRef<ExtendedDiv>(null);
 
     const editorHTMLRef = useRef<any>(null);
     const editorCSSRef = useRef<any>(null);
@@ -18,10 +27,11 @@ export default function Home() {
     useEffect(() => {
         const resizer1 = resizerRef1.current;
         const resizer2 = resizerRef2.current;
+        const resizer3 = resizerRef3.current;
 
         if (!resizer1 || !resizer2) return;
 
-        const onmousemove = (resizer: HTMLDivElement) => (e: MouseEvent) => {
+        const onmousemoveY = (resizer: ExtendedDiv) => (e: MouseEvent) => {
             if (!resizer._isResizing) return;
             e.preventDefault();
 
@@ -39,11 +49,11 @@ export default function Home() {
                 );
 
                 if (top.className == "div2") {
-                    top.style.flex = `0 1 ${height < 10 ? 0 : height}px`;
+                    top.style.flex = `0 1 ${height < 30 ? 0 : height}px`;
                     firstDivRef.current.style.flex = `0 ${firstDivRef.current.clientHeight}px`;
                     bottom.style.flex = `1 0`;
                 } else {
-                    top.style.flex = `0 ${height < 10 ? 0 : height}px`;
+                    top.style.flex = `0 ${height < 30 ? 0 : height}px`;
                     bottom.style.flex = "1 0";
                 }
             }
@@ -54,38 +64,98 @@ export default function Home() {
                     parseInt(getComputedStyle(bottom).height) - deltaY
                 );
                 if (bottom.className == "div2") {
-                    bottom.style.flex = `0 ${height < 10 ? 0 : height}px`;
+                    bottom.style.flex = `0 ${height < 30 ? 0 : height}px`;
                     top.style.flex = "1 0";
                     secondDivRef.current.style.flex = `0 1 ${secondDivRef.current.clientHeight}px`;
                 } else {
-                    bottom.style.flex = `0 ${height < 10 ? 0 : height}px`;
+                    bottom.style.flex = `0 ${height < 30 ? 0 : height}px`;
                     top.style.flex = "1 0";
                 }
             }
         };
 
-        const onmousedown = (resizer: HTMLDivElement) => (e: MouseEvent) => {
+        const onmousemoveX = (resizer: ExtendedDiv) => (e: MouseEvent) => {
+            if (!resizer._isResizing) return;
+            e.preventDefault();
+
+            const clientX = e.clientX;
+            const deltaX = clientX - resizer._clientX;
+            resizer._clientX = clientX;
+
+            const left = resizer.previousElementSibling as HTMLElement;
+            const right = resizer.nextElementSibling as HTMLElement;
+
+            // top
+            if (deltaX < 0) {
+                const height = Math.round(
+                    parseInt(getComputedStyle(left).width) + deltaX
+                );
+
+                if (left.className == "div2") {
+                    left.style.flex = `0 1 ${height < 30 ? 0 : height}px`;
+                    firstDivRef.current.style.flex = `0 ${firstDivRef.current.clientHeight}px`;
+                    right.style.flex = `1 0`;
+                } else {
+                    left.style.flex = `0 ${height < 30 ? 0 : height}px`;
+                    right.style.flex = "1 0";
+                }
+            }
+
+            // bottom
+            if (deltaX > 0) {
+                const height = Math.round(
+                    parseInt(getComputedStyle(right).width) - deltaX
+                );
+                if (right.className == "div2") {
+                    right.style.flex = `0 ${height < 30 ? 0 : height}px`;
+                    left.style.flex = "1 0";
+                    secondDivRef.current.style.flex = `0 1 ${secondDivRef.current.clientHeight}px`;
+                } else {
+                    right.style.flex = `0 ${height < 30 ? 0 : height}px`;
+                    left.style.flex = "1 0";
+                }
+            }
+        };
+
+        const onmousedownY = (resizer: ExtendedDiv) => (e: MouseEvent) => {
             e.preventDefault();
             resizer._isResizing = true;
             resizer._clientY = e.clientY;
 
-            document.addEventListener("mousemove", onmousemove(resizer));
-            document.addEventListener("mouseup", onmouseup(resizer));
+            document.addEventListener("mousemove", onmousemoveY(resizer));
+            document.addEventListener("mouseup", onmouseupY(resizer));
+        };
+        const onmousedownX = (resizer: ExtendedDiv) => (e: MouseEvent) => {
+            e.preventDefault();
+            resizer._isResizing = true;
+            resizer._clientX = e.clientX;
+
+            document.addEventListener("mousemove", onmousemoveX(resizer));
+            document.addEventListener("mouseup", onmouseupX(resizer));
         };
 
-        const onmouseup = (resizer: HTMLDivElement) => (e: MouseEvent) => {
+        const onmouseupY = (resizer: ExtendedDiv) => (e: MouseEvent) => {
             e.preventDefault();
             resizer._isResizing = false;
-            document.removeEventListener("mousemove", onmousemove(resizer));
-            document.removeEventListener("mouseup", onmouseup(resizer));
+            document.removeEventListener("mousemove", onmousemoveY(resizer));
+            document.removeEventListener("mouseup", onmouseupY(resizer));
         };
 
-        resizer1.addEventListener("mousedown", onmousedown(resizer1));
-        resizer2.addEventListener("mousedown", onmousedown(resizer2));
+        const onmouseupX = (resizer: ExtendedDiv) => (e: MouseEvent) => {
+            e.preventDefault();
+            resizer._isResizing = false;
+            document.removeEventListener("mousemove", onmousemoveX(resizer));
+            document.removeEventListener("mouseup", onmouseupX(resizer));
+        };
+
+        resizer1.addEventListener("mousedown", onmousedownY(resizer1));
+        resizer2.addEventListener("mousedown", onmousedownY(resizer2));
+        resizer3.addEventListener("mousedown", onmousedownX(resizer3));
 
         return () => {
-            resizer1.removeEventListener("mousedown", onmousedown(resizer1));
-            resizer2.removeEventListener("mousedown", onmousedown(resizer2));
+            resizer1.removeEventListener("mousedown", onmousedownY(resizer1));
+            resizer2.removeEventListener("mousedown", onmousedownY(resizer2));
+            resizer3.removeEventListener("mousedown", onmousedownY(resizer3));
         };
     }, []);
 
@@ -101,12 +171,8 @@ export default function Home() {
         editorJSRef.current = editor;
     };
 
-    const defaultHtml =
-        "<img class='img' src='https://cdn.discordapp.com/avatars/1189198536001196074/d2c19716eed1cc330b45902c743916e4.webp?size=100'>";
-    const defaultCss = `.img { 
-    border-radius: 100%
-  }
-  `;
+    const defaultHtml = '';
+    const defaultCss = '';
 
     const [html, setHTML] = useState(defaultHtml);
     const [css, setCSS] = useState(defaultCss);
@@ -141,35 +207,7 @@ export default function Home() {
         <div className="app">
             <div className="resizable-x">
                 <div className="resizable-y" style={{flex: "50%"}}>
-                    <div className="div1" style={{flex: "33.33%"}} ref={firstDivRef}>
-                        <Editor
-                            height="100%"
-                            width="100%"
-                            defaultLanguage="css"
-                            defaultValue=""
-                            theme="light"
-                            loading="One minute..."
-                            onMount={handleEditorCSSDidMount}
-                            value={css}
-                            onChange={(value, event) => setCSS(value)}
-                        />
-                    </div>
-                    <div className="resizer-y" ref={resizerRef1}></div>
-                    <div className="div2" style={{flex: "66.66%"}}>
-                        <Editor
-                            height="100%"
-                            width="100%"
-                            defaultLanguage="javascript"
-                            defaultValue=""
-                            theme="light"
-                            loading="One minute..."
-                            onMount={handleEditorJSDidMount}
-                            value={js}
-                            onChange={(value, event) => setJS(value)}
-                        />
-                    </div>
-                    <div className="resizer-y" ref={resizerRef2}></div>
-                    <div className="div0" style={{flex: "0 1 99px"}} ref={secondDivRef}>
+                    <div className="div1" style={{flex: "25%"}} ref={firstDivRef}>
                         <Editor
                             height="100%"
                             width="100%"
@@ -177,11 +215,43 @@ export default function Home() {
                             defaultValue=""
                             theme="light"
                             loading="One minute..."
-                            onMount={handleEditorHTMLDidMount}
+                            onMount={handleEditorCSSDidMount}
                             value={html}
-                            onChange={(value, event) => setHTML(value)}
+                            onChange={(value, event) => setHTML(value || '')}
                         />
                     </div>
+                    <div className="resizer-y" ref={resizerRef1}></div>
+                    <div className="div2" style={{flex: "25%"}}>
+                        <Editor
+                            height="100%"
+                            width="100%"
+                            defaultLanguage="css"
+                            defaultValue=""
+                            theme="light"
+                            loading="One minute..."
+                            onMount={handleEditorJSDidMount}
+                            value={css}
+                            onChange={(value, event) => setCSS(value || '')}
+                        />
+                    </div>
+                    <div className="resizer-y" ref={resizerRef2}></div>
+                    <div className="div0" style={{flex: "25%"}} ref={secondDivRef}>
+                        <Editor
+                            height="100%"
+                            width="100%"
+                            defaultLanguage="javascript"
+                            defaultValue=""
+                            theme="light"
+                            loading="One minute..."
+                            onMount={handleEditorHTMLDidMount}
+                            value={js}
+                            onChange={(value, event) => setJS(value || '')}
+                        />
+                    </div>
+                </div>
+                <div className="resizer-x" ref={resizerRef3}></div>
+                <div className='w-full h-full'>
+                    <iframe ref={iframeRef} className='w-full h-full'/>
                 </div>
             </div>
         </div>
