@@ -208,6 +208,7 @@ export default function Home() {
             <div className="resizable-x">
                 <div className="resizable-y" style={{flex: "50%"}}>
                     <div className="div1" style={{flex: "25%"}} ref={firstDivRef}>
+                        <h3 className='uppercase w-full text-center	'>html</h3>
                         <Editor
                             height="100%"
                             width="100%"
@@ -222,6 +223,7 @@ export default function Home() {
                     </div>
                     <div className="resizer-y" ref={resizerRef1}></div>
                     <div className="div2" style={{flex: "25%"}}>
+                        <h3 className='uppercase w-full text-center	'>css</h3>
                         <Editor
                             height="100%"
                             width="100%"
@@ -236,6 +238,7 @@ export default function Home() {
                     </div>
                     <div className="resizer-y" ref={resizerRef2}></div>
                     <div className="div0" style={{flex: "25%"}} ref={secondDivRef}>
+                        <h3 className='uppercase w-full text-center	'>javascript</h3>
                         <Editor
                             height="100%"
                             width="100%"
@@ -250,7 +253,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="resizer-x" ref={resizerRef3}></div>
-                <div className='w-full h-full'>
+                <div className='w-[75%] h-[75%]'>
                     <iframe ref={iframeRef} className='w-full h-full'/>
                 </div>
             </div>

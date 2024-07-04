@@ -1,7 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, {Document, Model, Schema} from "mongoose";
 
+export interface ICode extends Document {
+    name: string;
+    description: string;
+    show: string;
+    author: string;
+    html: string;
+    css: string;
+    js: string;
+}
 
-const SchemaHeroes = new mongoose.Schema({
+const SchemaCode: Schema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -12,16 +21,33 @@ const SchemaHeroes = new mongoose.Schema({
         required: true,
         unique: false
     },
-    element: {
+    show: {
+        type: Boolean,
+        required: true,
+        unique: false
+    },
+    author: {
         type: String,
         required: true,
         unique: false
     },
-    uri: {
+    html: {
         type: String,
         required: true,
         unique: false
-    }
+    },
+    css: {
+        type: String,
+        required: true,
+        unique: false
+    },
+    js: {
+        type: String,
+        required: true,
+        unique: false
+    },
 });
 
-const heroes = new mongoose.model('heroes', SchemaHeroes);
+const code: Model<ICode> = new mongoose.model('codes', SchemaCode);
+
+export default code;

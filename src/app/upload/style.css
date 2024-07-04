@@ -19,14 +19,22 @@
     flex-direction: column;
 }
 
-.resizer-y,
-.resizer-x {
+.resizer-y {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     background: black;
     padding: 1px;
+}
+
+.resizer-x {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    padding: 4px;
 }
 
 .resizer-x::before,
