@@ -48,6 +48,6 @@ const SchemaCode: Schema = new mongoose.Schema({
     },
 });
 
-const code: Model<ICode> = new mongoose.model('codes', SchemaCode);
+const code: Model<ICode> = new mongoose.model('code', SchemaCode);
 
 export default code;

@@ -11,7 +11,8 @@ const Footer = () => {
     return (
         <>
             {pathName !== '/upload' && (
-                <footer className='h-[156px] w-[100%] px-[40px] flex items-center gap-[33px] bg-[#6A6A6A]'>
+                <footer
+                    className='h-[156px] w-[100%] px-[40px] flex items-center gap-[33px] bg-[#6A6A6A] top-[0px]'>
                     <nav className='flex flex-col gap-[15px]'>
                         <ul><Link href='https://www.youtube.com/@chudd_off' className='text-white'>YouTube</Link></ul>
                         <ul><Link href='https://t.me/chudd_off' className='text-white'>Telegram</Link></ul>
