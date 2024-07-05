@@ -2,10 +2,13 @@
 import React from 'react';
 
 interface ModalProps {
-    show?: boolean;
+    show: boolean;
 }
 
 const Modal:React.FC <ModalProps> = ({show}) => {
+    if (!show) {
+        return null;
+    } else
     return (
         <div className={`gap-[30px] p-[50px] rounded-[50px] border-[9px] border-solid border-[#ff6359] bg-[#c6c6c6] flex flex-col items-center `}>
             <h2 className={`font-bold text-[48px] text-center`}>Save</h2>
