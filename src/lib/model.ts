@@ -3,7 +3,7 @@ import mongoose, {Document, Model, Schema} from "mongoose";
 export interface ICode extends Document {
     name: string;
     description: string;
-    show: string;
+    show: boolean;
     author: string;
     html: string;
     css: string;
@@ -48,6 +48,11 @@ const SchemaCode: Schema = new mongoose.Schema({
     },
 });
 
-const code: Model<ICode> = new mongoose.model('code', SchemaCode);
+let code: Model<ICode>;
+if (mongoose.models.codes) {
+    code = new mongoose.model('codes'); // Получаем существующую модель
+} else {
+    code = new mongoose.model('codes', SchemaCode); // Создаем новую модель, если ее нет
+}
 
 export default code;

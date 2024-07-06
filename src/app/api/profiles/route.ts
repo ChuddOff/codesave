@@ -2,6 +2,7 @@ import clientPromise from "@/lib/mongoConnect";
 import code, {ICode} from "@/lib/model";
 import {Db, ObjectId} from "mongodb";
 import {NextApiRequest, NextApiResponse} from "next";
+import {NextResponse} from "next/server";
 
 interface IbodyPost {
     name: string,
@@ -40,12 +41,12 @@ export async function CodeHandler(req: NextApiRequest, res: NextApiResponse) {
                 const newCodes = await code.find({author: bodyObject.author})
 
                 if (!newCodes) {
-                    res.status(400);
+                    return NextResponse.json({status: 400})
                 }
 
-                res.status(201).json(newCodes);
+                return NextResponse.json({status: 200, code: newCodes})
             } catch (error) {
-                res.status(400).json({success: false, error});
+                return NextResponse.json({status: 400, error: error})
             }
     }
 }

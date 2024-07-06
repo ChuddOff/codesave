@@ -1,14 +1,27 @@
-import React from 'react';
+'use client'
+
+import React, {useEffect, useState} from 'react';
 import useSWR from "swr";
-import {log} from "node:util";
+
+interface Item {
+    name: string,
+    description: string,
+    show: boolean,
+    author: string,
+    html: string,
+    css: string,
+    js: string
+}
 
 
-const Code = async () => {
-    const url = process.env.URL;
+const fetcher = async (): Promise<Item[]> => {
+    const res = await fetch('/api/allCodes')
+    return res.json()
+}
+const Code = () => {
+    const {data, error, isLoading} = useSWR<Item[]>('code', fetcher);
 
-    const json = await fetch(`http://localhost:3000/api/allCodes`)
-
-    console.log(json)
+    console.log(JSON.stringify(data))
 
     return (
 

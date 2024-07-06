@@ -2,6 +2,7 @@ import clientPromise from "@/lib/mongoConnect";
 import code, {ICode} from "@/lib/model";
 import {Db, ObjectId} from "mongodb";
 import {NextApiRequest, NextApiResponse} from "next";
+import {NextResponse} from "next/server";
 
 interface IbodyPost {
     name: string,
@@ -29,90 +30,101 @@ interface IbodyGet {
     author: string;
 }
 
-export async function CodeHandler(req: NextApiRequest, res: NextApiResponse) {
+export async function PUT(req: NextApiRequest, res: NextApiResponse) {
     await clientPromise;
 
-    switch (req.method) {
-        case 'POST':
-            try {
-                const bodyObject = req.body as IbodyPost;
-                // name, description, show, author, html, css, js
+    try {
+        const bodyObject = req.body as IbodyPut;
+        // _id, name, description, show, author, html, css, js
 
-                const newCode = await code.create(bodyObject)
+        await code.deleteOne({_id: bodyObject._id})
 
-                await newCode.save()
+        const newCode = await code.create({
+            name: bodyObject.name,
+            description: bodyObject.description,
+            show: bodyObject.show,
+            author: bodyObject.author,
+            html: bodyObject.html,
+            css: bodyObject.css,
+            js: bodyObject.js
+        })
 
-                res.status(201);
-            } catch (error) {
-                res.status(400).json({success: false, error});
-            }
-        case 'GET':
-            try {
-                const bodyObject = req.body as IbodyGet;
-                // _id, author
-                let object;
-                const newCode = await code.findOne({_id: bodyObject._id}, function (err, obj) {
-                    object = obj
-                })
+        await newCode.save()
 
-                if (!newCode) {
-                    res.status(400);
-                }
+        return NextResponse.json({status: 200})
+    } catch (error) {
+        return NextResponse.json({status: 400, error: error})
+    }
+}
 
-                if (!object.show && object.author === bodyObject.author) {
-                    res.status(400);
-                }
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
+    await clientPromise;
 
-                res.status(201).json(newCode);
-            } catch (error) {
-                res.status(400).json({success: false, error});
-            }
-        case 'DELETE':
-            try {
-                const bodyObject = req.body as IbodyGet;
-                // _id, author
-                let object;
-                const newCode = await code.findOne({_id: bodyObject._id}, function (err, obj) {
-                    object = obj
-                })
+    try {
+        const bodyObject = await req.json() as IbodyPost;
+        // name, description, show, author, html, css, js
 
-                if (!newCode) {
-                    res.status(400);
-                }
+        console.log(bodyObject);
+        const newCode = await code.create(bodyObject)
 
-                if (!object.show && object.author === bodyObject.author) {
-                    res.status(400);
-                }
+        await newCode.save()
 
-                await code.deleteOne({_id: bodyObject._id})
+        return NextResponse.json({status: 200})
+    } catch (error) {
+        return NextResponse.json({status: 400, error: error})
+    }
 
-                res.status(201)
+}
 
-            } catch (error) {
-                res.status(400).json({success: false, error});
-            }
-        case 'PUT':
-            try {
-                const bodyObject = req.body as IbodyPut;
-                // _id, name, description, show, author, html, css, js
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+    await clientPromise
 
-                await code.deleteOne({_id: bodyObject._id})
+    try {
+        const bodyObject = req.body as IbodyGet;
+        // _id, author
+        let object;
+        const newCode = await code.findOne({_id: bodyObject._id}, function (err, obj) {
+            object = obj
+        })
 
-                const newCode = await code.create({
-                    name: bodyObject.name,
-                    description: bodyObject.description,
-                    show: bodyObject.show,
-                    author: bodyObject.author,
-                    html: bodyObject.html,
-                    css: bodyObject.css,
-                    js: bodyObject.js
-                })
+        if (!newCode) {
+            return NextResponse.json({status: 400})
+        }
 
-                await newCode.save()
+        if (!object.show && object.author === bodyObject.author) {
+            return NextResponse.json({status: 400})
+        }
 
-                res.status(201);
-            } catch (error) {
-                res.status(400).json({success: false, error});
-            }
+        return NextResponse.json({status: 200, code: newCode})
+    } catch (error) {
+        return NextResponse.json({status: 400, error: error})
+    }
+}
+
+export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+    await clientPromise;
+
+    try {
+        const bodyObject = req.body as IbodyGet;
+        // _id, author
+        let object;
+        const newCode = await code.findOne({_id: bodyObject._id}, function (err, obj) {
+            object = obj
+        })
+
+        if (!newCode) {
+            return NextResponse.json({status: 400})
+        }
+
+        if (!object.show && object.author === bodyObject.author) {
+            return NextResponse.json({status: 400})
+        }
+
+        await code.deleteOne({_id: bodyObject._id})
+
+        return NextResponse.json({status: 200})
+
+    } catch (error) {
+        return NextResponse.json({status: 400, error: error})
     }
 }
