@@ -1,12 +1,12 @@
 "use client";
-import Upload from "@/components/upload/Upload";
-import Modal from "@/components/modal/modal";
 
 import React, { useEffect, useRef, useState } from "react";
 import { Editor, OnMount } from "@monaco-editor/react";
 
 import "./style.css";
 import { Button } from "@nextui-org/button";
+import { postCode } from "@/actions/actions";
+import { SubmitButton } from "@/components/upload/SubmitButton";
 
 interface ExtendedDiv extends HTMLDivElement {
   _clientY: number;
@@ -18,6 +18,9 @@ export default function Home() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
+  const [html, setHTML] = useState("");
+  const [css, setCSS] = useState("");
+  const [js, setJS] = useState("");
 
   const resizerRef1 = useRef<ExtendedDiv>(null);
   const resizerRef2 = useRef<ExtendedDiv>(null);
@@ -177,12 +180,16 @@ export default function Home() {
     editorJSRef.current = editor;
   };
 
-  const defaultHtml = "";
-  const defaultCss = "";
+  // bind other options needed for mongoose
 
-  const [html, setHTML] = useState(defaultHtml);
-  const [css, setCSS] = useState(defaultCss);
-  const [js, setJS] = useState("");
+  // validate data with zod before posting
+  const postCodeWithConfig = postCode.bind(null, {
+    author: "chudOff",
+    show: true,
+    html,
+    css,
+    js,
+  });
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -208,32 +215,6 @@ export default function Home() {
       }
     }
   }, [html, css, js]);
-
-  const postCode = async (e) => {
-    e.preventDefault();
-
-    // Собираем данные формы в объект
-    const formData = {
-      name: name,
-      description: desc,
-      show: true,
-      author: "chuddoff",
-      html: html,
-      css: css,
-      js: js,
-    };
-
-    // Преобразуем объект в строку JSON
-    const jsonData = JSON.stringify(formData);
-
-    await fetch("http://localhost:3000/api/code", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonData,
-    });
-  };
 
   return (
     <>
@@ -310,18 +291,19 @@ export default function Home() {
             className={` gap-[30px] rounded-[50px] bg-white flex flex-col items-center w-[538px] h-[600px]`}
           >
             <form
-              onSubmit={postCode}
+              action={postCodeWithConfig}
               className={`flex flex-col w-full h-full p-8`}
             >
               <h2 className={`font-bold text-[24px] mt-2 text-center`}>Save</h2>
               <h3 className={`text-[24px] text-center mb-3`}>
-                Укажите настройки
+                Укажите название и описание
               </h3>
               <input
                 required={true}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={`Название`}
+                name="name"
                 type="text"
                 className={`rounded-[20px] py-[10px] pl-[15px] rounded-[10pxS] text-[18px] outline-none bg-[#f7f7f7] border-1 border-[#e7e7e7] mb-4`}
               />
@@ -330,18 +312,13 @@ export default function Home() {
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 className="rounded-[20px] py-[10px] pl-[15px] resize-none outline-none bg-[#f7f7f7] border-1 border-[#e7e7e7] mb-5"
-                name="111"
+                name="description"
                 id=""
                 cols="30"
                 rows="6"
                 placeholder={`Описание`}
               ></textarea>
-              <button
-                type="submit"
-                className={`rounded-[20px] text-center max-w-max ml-auto bg-success-400 text-black shadow-xl py-[10px] px-[20px]`}
-              >
-                Сохранить
-              </button>
+              <SubmitButton />
             </form>
           </div>
         </div>
