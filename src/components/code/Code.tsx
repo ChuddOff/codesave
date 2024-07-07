@@ -1,7 +1,6 @@
-'use client'
+// 'use client'
 
-import React, {useEffect, useState} from 'react';
-import useSWR from "swr";
+import React from 'react';
 
 interface Item {
     name: string,
@@ -13,20 +12,27 @@ interface Item {
     js: string
 }
 
+async function getData() {
+    const url = process.env.URL
+    const response = await fetch(url + '/api/allCodes')
+    console.log(response)
 
-const fetcher = async (): Promise<Item[]> => {
-    const res = await fetch('/api/allCodes')
-    return res.json()
+    return response.json()
 }
-const Code = () => {
-    const {data, error, isLoading} = useSWR<Item[]>('code', fetcher);
 
-    console.log(JSON.stringify(data))
+const Code = async () => {
+    const codes: Item[] = await getData()
 
     return (
 
         <div className='py-[70px] h-full'>
             <h2 className="text-center font-semibold text-violet text-6xl">Изобретения нашего сообщества!</h2>
+            {codes.map((item, index) => (
+                <div key={index}>
+                    <h2>{item.name}</h2>
+                    <h3>{item.description}</h3>
+                </div>
+            ))}
         </div>
     );
 };

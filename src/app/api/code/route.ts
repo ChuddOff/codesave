@@ -80,7 +80,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     await clientPromise
 
     try {
-        const bodyObject = req.body as IbodyGet;
+        const bodyObject = req.json() as IbodyGet;
         // _id, author
         let object;
         const newCode = await code.findOne({_id: bodyObject._id}, function (err, obj) {
