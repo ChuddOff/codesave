@@ -1,40 +1,99 @@
-'use client'
-import React, {useState} from 'react';
+"use client";
+
+import React, { useState } from "react";
 
 interface ModalProps {
-    show: boolean;
+  show: boolean;
+  namep: string;
+  descriptionp: string;
+  htmlp: string;
+  cssp: string;
+  jsp: string;
 }
 
-const Modal: React.FC<ModalProps> = ({show}) => {
+const AppModal: React.FC<ModalProps> = ({
+  show,
+  htmlp,
+  cssp,
+  jsp,
+  namep,
+  descriptionp,
+}) => {
+  const [name, setName] = useState<string>(namep);
+  const [desc, setDesc] = useState<string>(descriptionp);
 
+  const postCode = async (e) => {
+    e.preventDefault();
 
-    if (!show) {
-        return null;
-    } else
-        return (
-            <div className='fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm'>
-                <div
-                    className={` gap-[30px] p-[50px] rounded-[50px] border-[9px] border-solid border-[#ff6359] bg-[#c6c6c6] flex flex-col items-center w-[538px] h-[696px]`}>
-                    <form className={`flex flex-col gap-[10px] w-[420px]`}>
-                        <h2 className={`font-bold text-[48px] text-center`}>Save</h2>
-                        <h3 className={`text-[36px] text-center font-semibold`}>Укажите настройки</h3>
-                        <input placeholder={`Название`} type="text"
-                               className={`rounded-[20px] border-[3px] border-black py-[10px] pl-[5px] rounded-[10pxS] text-[18px] text-orange'`}/>
-                        <textarea className='rounded-[20px] border-[3px] border-black py-[10px] pl-[5px]' name="111"
-                                  id="" cols="30"
-                                  rows="3"
-                                  placeholder={`Описание`}></textarea>
-                        <button
-                            type='submit'
-                            className={`w-[420px] rounded-[20px] px-[50px] py-[20px] text-violet border-[3px] border-black text-[36px] text-center font-semibold`}>
-                            Сохранить
-                        </button>
-                    </form>
+    // Собираем данные формы в объект
+    const formData = {
+      name: name,
+      description: desc,
+      show: true,
+      author: "chuddoff",
+      html: htmlp,
+      css: cssp,
+      js: jsp,
+    };
 
-                </div>
-            </div>
+    // Преобразуем объект в строку JSON
+    const jsonData = JSON.stringify(formData);
 
-        );
+    await fetch("http://localhost:3000/api/code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonData,
+    });
+  };
+
+  return (
+    <>
+      {show && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div
+            className={` gap-[30px] p-[50px] rounded-[50px] border-[9px] border-solid border-[#ff6359] bg-[#c6c6c6] flex flex-col items-center w-[538px] h-[696px]`}
+          >
+            <form
+              onSubmit={postCode}
+              className={`flex flex-col gap-[10px] w-[420px]`}
+            >
+              <h2 className={`font-bold text-[48px] text-center`}>Save</h2>
+              <h3 className={`text-[36px] text-center font-semibold`}>
+                Укажите настройки
+              </h3>
+              <input
+                required={true}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={`Название`}
+                type="text"
+                className={`rounded-[20px] border-[3px] border-black py-[10px] pl-[5px] rounded-[10pxS] text-[18px] text-orange'`}
+              />
+              <textarea
+                required={true}
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                className="rounded-[20px] border-[3px] border-black py-[10px] pl-[5px]"
+                name="111"
+                id=""
+                cols={30}
+                rows={3}
+                placeholder={`Описание`}
+              ></textarea>
+              <button
+                type="submit"
+                className={`w-[420px] rounded-[20px] px-[50px] py-[20px] text-violet border-[3px] border-black text-[36px] text-center font-semibold`}
+              >
+                Сохранить
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
-export default Modal;
+export default AppModal;
