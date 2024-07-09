@@ -19,7 +19,7 @@ interface EditorProps {
   jsp?: string;
   namep?: string;
   descriptionp?: string;
-  typep?: string,
+  typep?: string;
 }
 
 const AppEditor: React.FC<EditorProps> = ({

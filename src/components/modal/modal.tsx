@@ -1,6 +1,9 @@
 "use client";
 
-import React, {useState} from "react";
+import { Button } from "@nextui-org/react";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 interface ModalProps {
   show: boolean;
@@ -22,8 +25,10 @@ const AppModal: React.FC<ModalProps> = ({
   const [name, setName] = useState<string>(namep);
   const [desc, setDesc] = useState<string>(descriptionp);
   const [showCode, setShowCode] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
-  const postCode = async (e:any) => {
+  const postCode = async (e: any) => {
     e.preventDefault();
 
     // Собираем данные формы в объект
@@ -40,13 +45,24 @@ const AppModal: React.FC<ModalProps> = ({
     // Преобразуем объект в строку JSON
     const jsonData = JSON.stringify(formData);
 
-    await fetch("http://localhost:3000/api/code", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonData,
-    });
+    setLoading(true);
+
+    try {
+      const post = await fetch("http://localhost:3000/api/code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonData,
+      });
+      if (post.ok) {
+        router.push("/code");
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,21 +100,44 @@ const AppModal: React.FC<ModalProps> = ({
                 placeholder={`Описание`}
               ></textarea>
               <div className={`flex gap-[10px] justify-center`}>
-                <button type={"button"} onClick={() => {setShowCode(true)}}
-                        className={`px-[10px] py-[5px] border-violet border-solid border-[5px] text-center font-semibold text-[30px] rounded-[10px] transition-[0.2s] ${showCode && `bg-violet text-white`}`}>
+                <button
+                  type={"button"}
+                  onClick={() => {
+                    setShowCode(true);
+                  }}
+                  className={`px-[10px] py-[5px] border-violet border-solid border-[5px] text-center font-semibold text-[30px] rounded-[10px] transition-[0.2s] ${
+                    showCode && `bg-violet text-white`
+                  }`}
+                >
                   Публичный
                 </button>
-                <button type={"button"} onClick={() => {setShowCode(false)}}
-                        className={`px-[10px] py-[5px] border-orange border-solid border-[5px] text-center font-semibold text-[30px] rounded-[10px] transition-[0.2s] ${!showCode && `bg-orange text-white`}`}>
+                <button
+                  type={"button"}
+                  onClick={() => {
+                    setShowCode(false);
+                  }}
+                  className={`px-[10px] py-[5px] border-orange border-solid border-[5px] text-center font-semibold text-[30px] rounded-[10px] transition-[0.2s] ${
+                    !showCode && `bg-orange text-white`
+                  }`}
+                >
                   Приватный
                 </button>
               </div>
-              <button
-                  type="submit"
-                  className={`w-[420px] rounded-[20px] px-[50px] py-[10px] text-violet border-[3px] border-black text-[36px] text-center font-semibold`}
+              {/* <button
+                type="submit"
+                className={`w-[420px] rounded-[20px] px-[50px] py-[10px] text-violet border-[3px] border-black text-[36px] text-center font-semibold`}
+              >
+                
+              </button> */}
+              <Button
+                type="submit"
+                isLoading={loading}
+                isDisabled={!name || !desc}
+                color={!name || !desc ? "default" : "primary"}
+                className={`w-[210px] h-[65px] m-auto font-semibold text-[30px]`}
               >
                 Сохранить
-              </button>
+              </Button>
             </form>
           </div>
         </div>
