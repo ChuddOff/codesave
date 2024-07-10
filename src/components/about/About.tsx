@@ -58,9 +58,11 @@ const About = () => {
           </h3>
         </div>
 
-        <button className="rounded-[13px] bg-orange w-[447px] h-[85px] text-[38px] font-[600] text-white mt-[80px] mb-[70px]">
-          Перейти в Code →
-        </button>
+        <a href="/code" className="mt-[80px] mb-[70px]">
+          <div className="rounded-[13px] bg-orange w-[447px] h-[85px] text-[38px] font-[600] text-white flex items-center justify-center">
+            Перейти в Code →
+          </div>
+        </a>
       </div>
     </main>
   );

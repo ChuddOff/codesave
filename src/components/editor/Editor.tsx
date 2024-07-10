@@ -297,14 +297,16 @@ const AppEditor: React.FC<EditorProps> = ({
           Save
         </Button>
       </div>
-      <AppModal
-        show={showModal}
-        htmlp={html}
-        cssp={css}
-        jsp={js}
-        namep={namep}
-        descriptionp={descriptionp}
-      />
+      {showModal && (
+        <AppModal
+          setColse={() => setShowModal(false)}
+          htmlp={html}
+          cssp={css}
+          jsp={js}
+          namep={namep}
+          descriptionp={descriptionp}
+        />
+      )}
     </>
   );
 };
