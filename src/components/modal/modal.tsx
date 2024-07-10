@@ -70,34 +70,39 @@ const AppModal: React.FC<ModalProps> = ({
       {show && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
           <div
-            className={` gap-[30px] p-[50px] rounded-[50px] bg-[#c6c6c6] flex flex-col items-center w-[538px] h-[696px]`}
+              className={`relative gap-[30px] p-[50px] rounded-[50px] bg-[#c6c6c6] flex flex-col items-center w-[550px]`}
           >
+            <svg onClick={() => } className={`absolute left-[480px] top-[30px]`} width="48" height="48" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M4.11 2.697L2.698 4.11 6.586 8l-3.89 3.89 1.415 1.413L8 9.414l3.89 3.89 1.413-1.415L9.414 8l3.89-3.89-1.415-1.413L8 6.586l-3.89-3.89z"
+                    fill="#000"></path>
+            </svg>
             <form
-              onSubmit={postCode}
-              className={`flex flex-col gap-[30px] w-[420px]`}
+                onSubmit={postCode}
+                className={`flex flex-col gap-[30px] w-[420px]`}
             >
               <h2 className={`font-bold text-[48px] text-center`}>Save</h2>
               <h3 className={`text-[36px] text-center font-semibold`}>
                 Укажите настройки
               </h3>
               <input
-                required={true}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={`Название`}
-                type="text"
-                className={`rounded-[10px] py-[10px] pl-[5px] text-[18px] text-orange'`}
+                  required={true}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={`Название`}
+                  type="text"
+                  className={`rounded-[10px] py-[10px] pl-[5px] text-[18px] text-orange'`}
               />
               <textarea
-                required={true}
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-                className="rounded-[10px] py-[10px] pl-[5px]"
-                name="111"
-                id=""
-                cols={30}
-                rows={3}
-                placeholder={`Описание`}
+                  required={true}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  className="rounded-[10px] py-[10px] pl-[5px]"
+                  name="111"
+                  id=""
+                  cols={30}
+                  rows={3}
+                  placeholder={`Описание`}
               ></textarea>
               <div className={`flex gap-[10px] justify-center`}>
                 <button

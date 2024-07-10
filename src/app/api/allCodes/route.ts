@@ -5,7 +5,6 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {NextResponse} from "next/server";
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    console.log(123)
     await clientPromise;
 
     try {
