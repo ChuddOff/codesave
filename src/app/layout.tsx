@@ -1,34 +1,37 @@
-import type {Metadata} from "next";
-import {Montserrat} from "next/font/google";
+import type { Metadata } from "next";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import NextUIProvider from "./provider/mainProvider";
 import React from "react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Provider } from "react-redux";
 
-const montserrat = Montserrat({subsets: ["latin"]});
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "CodeSave",
-    description: "охраните свои лучшие строки кода и поделитесь ими с другими разработчиками",
+  title: "CodeSave",
+  description:
+    "охраните свои лучшие строки кода и поделитесь ими с другими разработчиками",
 };
 
-
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
-    children: React.ReactNode;
+  children,
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
+  return (
+    <ClerkProvider>
+      <html lang="en">
         <body className={montserrat.className}>
-        <NextUIProvider>
-            <Header/>
+          <NextUIProvider>
+            <Header />
             {children}
-            <Footer/>
-        </NextUIProvider>
+            <Footer />
+          </NextUIProvider>
         </body>
-
-        </html>
-    );
+      </html>
+    </ClerkProvider>
+  );
 }

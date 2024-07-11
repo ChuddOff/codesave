@@ -34,12 +34,14 @@ export async function PUT(req: NextApiRequest, res: NextApiResponse) {
   await clientPromise;
 
   try {
-    const bodyObject = req.body as IbodyPut;
+    const bodyObject = (await req.json()) as IbodyPut;
     // _id, name, description, show, author, html, css, js
+    console.log(123);
 
     await code.deleteOne({ _id: bodyObject._id });
 
     const newCode = await code.create({
+      _id: bodyObject._id,
       name: bodyObject.name,
       description: bodyObject.description,
       show: bodyObject.show,
@@ -91,8 +93,10 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
       return NextResponse.json({ status: 400 });
     }
 
-    if (!newCode.show || newCode.author !== author) {
-      return NextResponse.json({ status: 400 });
+    console.log(author);
+
+    if (!newCode.show && newCode.author !== author) {
+      return NextResponse.json({ status: 403 });
     }
 
     return NextResponse.json({ status: 200, code: newCode });

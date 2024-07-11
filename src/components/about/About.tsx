@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const About = () => {
   return (
-    <main className="flex flex-col items-center h-[]">
+    <main className="flex flex-col items-center h-[] select-none">
       <h1 className="text-center font-semibold text-violet text-6xl mt-[70px]">
         Ваш <span className="font-extrabold text-orange">код</span> в надежных
         руках
@@ -25,7 +25,13 @@ const About = () => {
       <div className="w-[100%] bg-[#C2C2C2] flex flex-col items-center">
         <div className="flex gap-[100px] relative translate-y-[-75px] w-[100%] justify-center">
           <div className="flex gap-[15px] bg-violet px-[10px] py-[25px] w-[350px] justify-center rounded-[20px]">
-            <Image src="/Grow.svg" alt="Grow" width="92" height="92" />
+            <Image
+              src="/Grow.svg"
+              alt="Grow"
+              width="92"
+              height="92"
+              className="select-none"
+            />
             <h3 className="font-semibold text-lg w-[170px] text-white">
               Развиваете сообщество разработчиков
             </h3>
@@ -58,8 +64,8 @@ const About = () => {
           </h3>
         </div>
 
-        <a href="/code" className="mt-[80px] mb-[70px]">
-          <div className="rounded-[13px] bg-orange w-[447px] h-[85px] text-[38px] font-[600] text-white flex items-center justify-center">
+        <a href="/code" className="mt-[80px] mb-[70px] select-none">
+          <div className="rounded-[13px] bg-orange w-[447px] h-[85px] text-[38px] font-[600] text-white flex items-center justify-center select-nones">
             Перейти в Code →
           </div>
         </a>

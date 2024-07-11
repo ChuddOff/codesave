@@ -31,7 +31,7 @@ export default async function Home() {
   const codes: Item[] = await getData();
 
   return (
-    <div className="py-[70px] h-full">
+    <main className="py-[70px] h-full select-none">
       <h2 className="text-center font-semibold text-violet text-6xl">
         Изобретения нашего сообщества!
       </h2>
@@ -41,17 +41,29 @@ export default async function Home() {
             item.show && (
               <Link key={index} href={"/upload/" + item._id}>
                 <div className="bg-violet rounded-[20px] w-[400px] flex flex-col">
-                  <div className={`w-[100%] bg-amber-400 h-[150px] rounded-t-[20px] text-[40px] flex justify-center items-center`}>Preview</div>
-                  <div className={`flex flex-col gap-[10px] pb-[30px] items-center`}>
-                    <h2 className={`text-center text-[30px] text-white font-semibold p-[15px]`}>{item.name}</h2>
-                    <hr width="80%"/>
-                    <p className={`w-100% text-[20px] text-white px-[20px]`}>{item.description}</p>
+                  <div
+                    className={`w-[100%] bg-amber-400 h-[150px] rounded-t-[20px] text-[40px] flex justify-center items-center`}
+                  >
+                    Preview
+                  </div>
+                  <div
+                    className={`flex flex-col gap-[10px] pb-[30px] items-center`}
+                  >
+                    <h2
+                      className={`text-center text-[30px] text-white font-semibold p-[15px]`}
+                    >
+                      {item.name}
+                    </h2>
+                    <hr width="80%" />
+                    <p className={`w-100% text-[20px] text-white px-[20px]`}>
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               </Link>
-              )
+            )
         )}
       </div>
-    </div>
+    </main>
   );
 }

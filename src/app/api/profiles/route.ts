@@ -29,24 +29,24 @@ interface IbodyGet {
   author: string;
 }
 
-export async function CodeHandler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
   await clientPromise;
 
-  switch (req.method) {
-    case "GET":
-      try {
-        const bodyObject = req.body as IbodyGet;
-        // author
+  try {
+    const url = new URL(req.url || "");
+    const params = new URLSearchParams(url.searchParams);
+    const author = params.get("author");
 
-        const newCodes = await code.find({ author: bodyObject.author });
+    // author
 
-        if (!newCodes) {
-          return NextResponse.json({ status: 400 });
-        }
+    const newCodes = await code.find({ author: author });
 
-        return NextResponse.json({ status: 200, code: newCodes });
-      } catch (error) {
-        return NextResponse.json({ status: 400, error: error });
-      }
+    if (!newCodes) {
+      return NextResponse.json({ status: 400 });
+    }
+
+    return NextResponse.json({ status: 200, code: newCodes });
+  } catch (error) {
+    return NextResponse.json({ status: 400, error: error });
   }
 }

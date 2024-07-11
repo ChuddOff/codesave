@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
 import { Button } from "@nextui-org/react";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
@@ -12,6 +13,7 @@ interface ModalProps {
   htmlp: string;
   cssp: string;
   jsp: string;
+  edit: string;
 }
 
 const AppModal: React.FC<ModalProps> = ({
@@ -21,7 +23,10 @@ const AppModal: React.FC<ModalProps> = ({
   jsp,
   namep,
   descriptionp,
+  edit,
 }) => {
+  const { user } = useUser();
+
   const [name, setName] = useState<string>(namep);
   const [desc, setDesc] = useState<string>(descriptionp);
   const [showCode, setShowCode] = useState<boolean>(true);
@@ -33,28 +38,39 @@ const AppModal: React.FC<ModalProps> = ({
     e.preventDefault();
 
     // Собираем данные формы в объект
-    const formData = {
+    const formDataPost = {
       name: name,
       description: desc,
       show: showCode,
-      author: "chuddoff",
+      author: user?.id || "chuddoff",
+      html: htmlp || " ",
+      css: cssp || " ",
+      js: jsp || " ",
+    };
+    const formDataPut = {
+      _id: edit || "",
+      name: name,
+      description: desc,
+      show: showCode,
+      author: user?.id || "chuddoff",
       html: htmlp || " ",
       css: cssp || " ",
       js: jsp || " ",
     };
 
     // Преобразуем объект в строку JSON
-    const jsonData = JSON.stringify(formData);
+    const jsonDataPost = JSON.stringify(formDataPost);
+    const jsonDataPut = JSON.stringify(formDataPut);
 
     setLoading(true);
 
     try {
       const post = await fetch("http://localhost:3000/api/code", {
-        method: "POST",
+        method: edit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: jsonData,
+        body: edit ? jsonDataPut : jsonDataPost,
       });
       if (post.ok) {
         router.push("/code");

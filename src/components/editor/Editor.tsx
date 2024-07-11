@@ -20,6 +20,7 @@ interface EditorProps {
   namep?: string;
   descriptionp?: string;
   typep?: string;
+  edit?: string;
 }
 
 const AppEditor: React.FC<EditorProps> = ({
@@ -28,6 +29,7 @@ const AppEditor: React.FC<EditorProps> = ({
   jsp = "",
   namep = "",
   descriptionp = "",
+  edit = "",
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const resizerRef1 = useRef<ExtendedDiv>(null);
@@ -305,6 +307,7 @@ const AppEditor: React.FC<EditorProps> = ({
           jsp={js}
           namep={namep}
           descriptionp={descriptionp}
+          edit={edit}
         />
       )}
     </>

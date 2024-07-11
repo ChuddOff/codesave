@@ -9,6 +9,7 @@ interface CustomCheckboxProps {
   svgColor: string; // цвет галочки
   borderColor: string; // цвет бордера
   text: string;
+  state: () => void;
 }
 
 export default function CustomCheckbox({
@@ -17,12 +18,19 @@ export default function CustomCheckbox({
   svgColor,
   borderColor,
   text,
+  state,
 }: CustomCheckboxProps) {
-  const [isPressed, setIsPressed] = useState(false);
+  const [isPressed, setIsPressed] = useState(true);
 
   return (
     <div className="flex items-center">
-      <label className="inline-flex relative items-center cursor-pointer" onClick={() => setIsPressed(!isPressed)}>
+      <label
+        className="inline-flex relative items-center cursor-pointer"
+        onClick={() => {
+          setIsPressed(!isPressed);
+          state();
+        }}
+      >
         <motion.div
           animate={
             isPressed
@@ -52,7 +60,15 @@ export default function CustomCheckbox({
               />
             </motion.svg>
           </div>
-          <p className={ isPressed ? `text-orange font-semibold select-none text-[20px] transition-[300ms]` : `text-violet font-semibold select-none text-[20px] transition-[300ms]`}>{text}</p>
+          <p
+            className={
+              isPressed
+                ? `text-orange font-semibold select-none text-[20px] transition-[300ms]`
+                : `text-violet font-semibold select-none text-[20px] transition-[300ms]`
+            }
+          >
+            {text}
+          </p>
         </motion.div>
       </label>
     </div>

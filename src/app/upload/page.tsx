@@ -8,6 +8,7 @@ import { Editor, OnMount } from "@monaco-editor/react";
 import "./style.css";
 import { Button } from "@nextui-org/button";
 import AppEditor from "@/components/editor/Editor";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 interface ExtendedDiv extends HTMLDivElement {
   _clientY: number;
@@ -18,7 +19,15 @@ interface ExtendedDiv extends HTMLDivElement {
 export default function Home() {
   return (
     <>
-      <AppEditor />
+      <SignedOut>
+        <div className="flex flex-col justify-center items-center w-full h-[calc(100vh-130px)] gap-10">
+          <h3 className="text-3xl font-bold">Для доступа войдите в аккаунт.</h3>
+          <SignInButton className={"text-violet text-3xl font-bold"} />
+        </div>
+      </SignedOut>
+      <SignedIn>
+        <AppEditor />
+      </SignedIn>
     </>
   );
 }
