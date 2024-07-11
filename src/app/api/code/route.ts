@@ -1,8 +1,7 @@
 import clientPromise from "@/lib/mongoConnect";
 import code, { ICode } from "@/lib/model";
 import { Db, ObjectId } from "mongodb";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface IbodyPost {
   name: string;
@@ -30,7 +29,7 @@ interface IbodyGet {
   author: string;
 }
 
-export async function PUT(req: NextApiRequest, res: NextApiResponse) {
+export async function PUT(req: NextRequest) {
   await clientPromise;
 
   try {
@@ -64,7 +63,7 @@ export async function PUT(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
   await clientPromise;
 
   try {
@@ -82,7 +81,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest) {
   await clientPromise;
 
   try {
@@ -110,7 +109,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+export async function DELETE(req: NextRequest) {
   await clientPromise;
 
   try {
