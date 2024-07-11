@@ -8,6 +8,7 @@ import Search from "@/components/search/Search";
 import useSWR from "swr";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface Item {
   _id: string;
@@ -30,14 +31,28 @@ async function getData(id: string) {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
   });
   console.log(response);
 
   return response.json();
 }
 
-const Profile: React.FC = () => {
+async function deleteData(id: string, author: string) {
+  const url = process.env.URL;
+  const response = await fetch(`/api/code?_id=${id}&author=${author}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(response);
+
+  return response.json();
+}
+
+const Profile = () => {
+  const router = useRouter();
+
   const [data, setData] = useState<CodesBody>();
 
   const { user } = useUser();
@@ -52,6 +67,7 @@ const Profile: React.FC = () => {
   const [isPrivate, setIsPrivate] = useState<boolean>(true);
   const [isJS, setIsJS] = useState<boolean>(true);
   const [isCSS, setIsCSS] = useState<boolean>(true);
+  const [input, setInput] = useState<string>("");
 
   return (
     <main className="select-none">
@@ -107,16 +123,27 @@ const Profile: React.FC = () => {
               </div>
               <div className="flex flex-col gap-[10px] w-[50%]">
                 <p className={`italic font-bold text-violet text-[22px]`}>
-                  Элементов
+                  Строк кода
                 </p>
-                <p className={`font-normal text-orange text-[20px]`}>268</p>
+                <p className={`font-normal text-orange text-[20px]`}>
+                  {data
+                    ? data.code.reduce(
+                        (accum: number, item: Item) =>
+                          accum +
+                          item.html.split("\n").length +
+                          item.css.split("\n").length +
+                          item.js.split("\n").length,
+                        0
+                      )
+                    : 0}
+                </p>
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center border-5 border-violet border-solid rounded-[15px] pt-[15px]    w-[600px] h-[350px]">
             <h3 className={`font-bold text-[30px] text-orange`}>Фильтры</h3>
             <div className="flex flex-col gap-y-[15px] w-[100%] pl-[30px] pt-[30px]">
-              <Search />
+              <Search input={(value) => setInput(value)} />
               <div className={`flex flex-col gap-[10px] w-[100%]`}>
                 <div>
                   <Checkbox
@@ -170,23 +197,32 @@ const Profile: React.FC = () => {
               <>
                 {data?.code
                   .filter((item) => {
+                    let flag: boolean = true;
                     if (!isPublic) {
-                      return item.show !== true;
+                      flag = item.show !== true;
                     }
-                    if (!isPrivate) {
-                      return item.show === true;
+                    if (!isPrivate && flag) {
+                      flag = item.show === true;
                     }
-                    if (!isJS) {
-                      return item.js !== " " || !item.js;
+                    if (!isJS && flag) {
+                      flag = item.js !== " " || !item.js;
                     }
-                    if (!isCSS) {
-                      return item.css !== " " || !item.css;
+                    if (!isCSS && flag) {
+                      flag = item.css !== " " || !item.css;
                     }
-                    return true;
+                    if (input && flag) {
+                      flag =
+                        item.name.includes(input) ||
+                        item.description.includes(input);
+                    }
+                    return flag;
                   })
                   .map((item, index) => (
-                    <Link key={index} href={"/upload/" + item._id}>
-                      <div className="bg-violet rounded-[20px] w-[400px] flex flex-col">
+                    <div key={index} className="flex pl-[48px]">
+                      <Link
+                        className="bg-violet rounded-[20px] w-[400px] flex flex-col"
+                        href={"/upload/" + item._id}
+                      >
                         <div
                           className={`w-[100%] bg-amber-400 h-[150px] rounded-t-[20px] text-[40px] flex justify-center items-center`}
                         >
@@ -207,8 +243,26 @@ const Profile: React.FC = () => {
                             {item.description}
                           </p>
                         </div>
-                      </div>
-                    </Link>
+                      </Link>
+                      <svg
+                        onClick={() => {
+                          deleteData(item._id, user?.id || "");
+                          window.location.reload();
+                        }}
+                        className={`translate-x-[-60px] translate-y-[10px]`}
+                        width="48"
+                        height="48"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M4.11 2.697L2.698 4.11 6.586 8l-3.89 3.89 1.415 1.413L8 9.414l3.89 3.89 1.413-1.415L9.414 8l3.89-3.89-1.415-1.413L8 6.586l-3.89-3.89z"
+                          fill="#000"
+                        ></path>
+                      </svg>
+                    </div>
                   ))}
                 <h3>Конец списка, но вы можете дополнить его!</h3>
               </>

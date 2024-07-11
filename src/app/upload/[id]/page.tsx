@@ -67,7 +67,14 @@ export default function Home({ params: { id } }: Props) {
             edit={data.code._id}
           />
         )}
-        {data && data.status === 403 && <h1>234</h1>}
+        {data && data.status === 403 && (
+          <div className="flex flex-col justify-center items-center w-full h-[calc(100vh-130px)] gap-10">
+            <h3 className="text-3xl font-bold">
+              Вы не можете получить доступ к коду.
+            </h3>
+            <h3 className="text-3xl font-bold">Он приватный.</h3>
+          </div>
+        )}
       </SignedIn>
     </>
   );

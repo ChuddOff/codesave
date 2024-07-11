@@ -36,7 +36,12 @@ export async function PUT(req: NextApiRequest, res: NextApiResponse) {
   try {
     const bodyObject = (await req.json()) as IbodyPut;
     // _id, name, description, show, author, html, css, js
-    console.log(123);
+
+    const Code = await code.findOne({ _id: bodyObject._id }).exec();
+
+    if (Code!.author !== bodyObject.author) {
+      return NextResponse.json({ status: 403 });
+    }
 
     await code.deleteOne({ _id: bodyObject._id });
 
@@ -109,25 +114,19 @@ export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   await clientPromise;
 
   try {
-    const bodyObject = req.body as IbodyGet;
-    // _id, author
-    let object;
-    const newCode = await code.findOne(
-      { _id: bodyObject._id },
-      function (err, obj) {
-        object = obj;
-      }
-    );
+    const url = new URL(req.url || "");
+    const params = new URLSearchParams(url.searchParams);
 
-    if (!newCode) {
-      return NextResponse.json({ status: 400 });
+    const _id = params.get("_id");
+    const author = params.get("author");
+
+    const Code = await code.findOne({ _id: _id }).exec();
+
+    if (Code!.author !== author) {
+      return NextResponse.json({ status: 403 });
     }
 
-    if (!object.show && object.author === bodyObject.author) {
-      return NextResponse.json({ status: 400 });
-    }
-
-    await code.deleteOne({ _id: bodyObject._id });
+    await code.deleteOne({ _id: _id });
 
     return NextResponse.json({ status: 200 });
   } catch (error) {
