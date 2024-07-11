@@ -1,7 +1,18 @@
 import type { Config } from "tailwindcss";
 import {nextui} from "@nextui-org/react";
 
-const config: Config = {
+
+const config: {
+  plugins: ReturnType<Plugin>[];
+  theme: {
+    extend: {
+      backgroundImage: { "gradient-conic": string; "gradient-radial": string };
+      colors: { orange: string; violet: string }
+    }
+  };
+  darkMode: string;
+  content: string[]
+} = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -15,9 +26,14 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        violet: `#5a58ff`,
+        orange: `#FF6359`,
+      }
     },
   },
   darkMode: "class",
   plugins: [nextui()],
 };
+
 export default config;
