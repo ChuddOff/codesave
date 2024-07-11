@@ -1,4 +1,3 @@
-import Code from "@/components/code/Code";
 import Link from "next/link";
 import React from "react";
 
@@ -54,7 +53,7 @@ export default async function Home() {
                     >
                       {item.name}
                     </h2>
-                    <hr width="80%" />
+                    <hr className="w-[80%]" />
                     <p className={`w-100% text-[20px] text-white px-[20px]`}>
                       {item.description}
                     </p>

@@ -7,7 +7,11 @@ export default function Home() {
       <SignedOut>
         <div className="flex flex-col justify-center items-center w-full h-[calc(100vh-65px-156px)] gap-10">
           <h3 className="text-3xl font-bold">Для доступа войдите в аккаунт.</h3>
-          <SignInButton className={"text-violet text-3xl font-bold"} />
+          <SignInButton>
+            <button className={"text-violet text-3xl font-bold"}>
+              Sign in
+            </button>
+          </SignInButton>
         </div>
       </SignedOut>
       <SignedIn>

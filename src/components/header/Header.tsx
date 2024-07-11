@@ -57,7 +57,11 @@ const Header = () => {
         </NavbarItem>
         <NavbarItem>
           <SignedOut>
-            <SignInButton className={"text-violet font-[700]"} />
+            <SignInButton>
+              <button className={"text-violet text-3xl font-bold"}>
+                Sign in
+              </button>
+            </SignInButton>
           </SignedOut>
           <SignedIn>
             <div className={"flex gap-3"}>

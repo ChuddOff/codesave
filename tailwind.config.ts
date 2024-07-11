@@ -1,17 +1,16 @@
 import type { Config } from "tailwindcss";
-import {nextui} from "@nextui-org/react";
-
+import { nextui } from "@nextui-org/react";
 
 const config: {
-  plugins: ReturnType<Plugin>[];
+  plugins: any[];
   theme: {
     extend: {
       backgroundImage: { "gradient-conic": string; "gradient-radial": string };
-      colors: { orange: string; violet: string }
-    }
+      colors: { orange: string; violet: string };
+    };
   };
   darkMode: string;
-  content: string[]
+  content: string[];
 } = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -29,7 +28,7 @@ const config: {
       colors: {
         violet: `#5a58ff`,
         orange: `#FF6359`,
-      }
+      },
     },
   },
   darkMode: "class",
