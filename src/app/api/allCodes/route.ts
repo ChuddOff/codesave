@@ -1,6 +1,5 @@
 import clientPromise from "@/lib/mongoConnect";
 import code from "@/lib/model";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
