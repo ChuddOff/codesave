@@ -65,7 +65,7 @@ const AppModal: React.FC<ModalProps> = ({
     setLoading(true);
 
     try {
-      const post = await fetch("http://localhost:3000/api/code", {
+      const post = await fetch("/api/code", {
         method: edit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
