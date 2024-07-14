@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { DragEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@nextui-org/button";
 import { ObjectId } from "mongodb";
 import { Editor, OnMount } from "@monaco-editor/react";
@@ -231,11 +231,80 @@ const AppEditor: React.FC<EditorProps> = ({
     }
   }, [html, css, js]);
 
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
+    null
+  );
+  const [dragging, setDragging] = useState<boolean>(false);
+  const [focus, setFocus] = useState<boolean>(true);
+
+  const handleFileRead = (event: ProgressEvent<FileReader>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.target) {
+      setFileContent(event.target.result);
+    }
+  };
+
+  const handleFileChosen = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = handleFileRead;
+    reader.readAsText(file);
+    console.log(fileContent as string);
+
+    switch (file.name.split(".").pop() || "") {
+      case "html":
+        console.log(1);
+
+        setHTML(fileContent as string);
+        break;
+      case "css":
+        console.log(2);
+        setCSS(fileContent as string);
+        break;
+      case "js":
+        console.log(3);
+        setJS(fileContent as string);
+        break;
+    }
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragging(true);
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragging(false);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragging(false);
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleFileChosen(files[0]);
+    }
+  };
+
   return (
     <>
       <div>
+        {dragging && (
+          <div className="fixed inset-0 bg-blue-500 bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center pointer-events-none">
+            <div className="text-white text-xl">Перетащите файл сюда</div>
+          </div>
+        )}
         <div className="app">
-          <div className="resizable-x">
+          <div
+            className="resizable-x"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <div className="resizable-y" style={{ flex: "50%" }}>
               <div className="div1" style={{ flex: "25%" }} ref={firstDivRef}>
                 <h3 className="uppercase w-full text-center	">html</h3>
@@ -282,9 +351,19 @@ const AppEditor: React.FC<EditorProps> = ({
                 />
               </div>
             </div>
-            <div className="resizer-x" ref={resizerRef3}></div>
-            <div className="w-[75%] h-[75%]">
-              <iframe ref={iframeRef} className="w-full h-full" />
+            <div
+              className="resizer-x"
+              ref={resizerRef3}
+              onMouseDown={() => setFocus(true)}
+              onMouseUp={() => setFocus(false)}
+            ></div>
+            <div className={`w-[75%] h-[75%]`}>
+              <iframe
+                ref={iframeRef}
+                className={`w-full h-full ${
+                  (focus || dragging) && "pointer-events-none"
+                }`}
+              />
             </div>
           </div>
         </div>

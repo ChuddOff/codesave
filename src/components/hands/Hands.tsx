@@ -22,6 +22,7 @@ const Hands = () => {
           width={243.24}
           height={287.07}
           className="scale-x-[-1]"
+          draggable="false"
         />
       </motion.div>
       <motion.div
@@ -45,7 +46,13 @@ const Hands = () => {
         }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
       >
-        <Image src="/hand.png" alt="hand" width={243.24} height={287.07} />
+        <Image
+          src="/hand.png"
+          alt="hand"
+          width={243.24}
+          height={287.07}
+          draggable="false"
+        />
       </motion.div>
     </div>
   );

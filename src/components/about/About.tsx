@@ -31,19 +31,32 @@ const About = () => {
               width="92"
               height="92"
               className="select-none"
+              draggable="false"
             />
             <h3 className="font-semibold text-lg w-[170px] text-white">
               Развиваете сообщество разработчиков
             </h3>
           </div>
           <div className="flex gap-[15px] bg-violet px-[10px] py-[25px] w-[350px] justify-center rounded-[20px]">
-            <Image src="/Reuse.svg" alt="Grow" width="92" height="92" />
+            <Image
+              src="/Reuse.svg"
+              alt="Grow"
+              width="92"
+              height="92"
+              draggable="false"
+            />
             <h3 className="font-semibold text-lg w-[170px] text-white">
               Развиваете сообщество разработчиков
             </h3>
           </div>
           <div className="flex gap-[15px] bg-violet px-[10px] py-[25px] w-[350px] justify-center rounded-[20px]">
-            <Image src="/Rate.png" alt="Grow" width="92" height="92" />
+            <Image
+              src="/Rate.png"
+              alt="Grow"
+              width="92"
+              height="92"
+              draggable="false"
+            />
             <h3 className="font-semibold text-lg w-[170px] text-white">
               Развиваете сообщество разработчиков
             </h3>
